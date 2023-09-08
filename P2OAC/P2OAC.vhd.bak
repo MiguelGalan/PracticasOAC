@@ -1,0 +1,90 @@
+library IEEE;
+use IEEE.STD_LOGIC_1164.ALL;
+use IEEE.STD_LOGIC_ARITH.ALL;
+use IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY P2OAC IS 
+PORT( clk, E1, E2:  in std_logic;
+		S1, S2: out std_logic);
+END ENTITY;
+
+ARCHITECTURE Behavioral of P2OAC is
+signal div_clk: std_logic;
+subtype estados is std_logic_vector (1 downto 0);
+constant A : std_logic_vector (1 downto 0) := B"00";
+constant B : std_logic_vector (1 downto 0) := B"01";
+constant C : std_logic_vector (1 downto 0) := B"10";
+constant D : std_logic_vector (1 downto 0) := B"11";
+signal estado_actual, estado_siguiente: estados;
+begin
+	process (clk)
+	variable cuenta: std_logic_vector (27 downto 0):= X"0000000";
+	begin
+
+	if rising_edge (clk) then
+		if cuenta = 	X"FFFFFFF" then
+				cuenta:= X"0000000";
+			else
+				cuenta:= cuenta+1;
+			end if;
+	end if;
+	div_clk <= cuenta(20); -- 20 SEGUNDOS	
+end process;
+
+
+	process(div_clk)
+		begin
+			if rising_edge(div_clk) then
+				estado_actual <=  estado_siguiente;
+			end if;
+		end process;
+		
+	process(E1,E2, estado_actual)
+	begin
+
+		case (estado_actual) is
+				when A=>
+					S2 <= '1';
+					S1 <= '0';
+					if ( E1 = '0') then
+						estado_siguiente <= B;
+					else
+						if ( E2 = '0') then
+							estado_siguiente <= A;
+						else
+							estado_siguiente <= D;
+						end if;
+					end if;
+					
+			when B=>
+					S2 <='0';
+					S1 <='0';
+					if ( E2 = '1') then
+						estado_siguiente <= B;
+					else
+						estado_siguiente <= C;
+					end if;
+					
+				when C=>
+					S2 <= '1';
+					S1 <= '1'; 
+				   if ( E2 = '1') then
+						estado_siguiente <= D;
+					else
+						if ( E1 = '0') then
+							estado_siguiente <= C;
+						else
+							estado_siguiente <= A;
+						end if;
+					end if;
+					
+				when D=>
+					S2 <= '0';
+					S1 <= '1';
+					estado_siguiente <= A;
+
+				when others => null;	
+				end case;
+	end process;
+	
+end architecture;				

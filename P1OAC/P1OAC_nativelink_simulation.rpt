@@ -1,0 +1,23 @@
+Info: Start Nativelink Simulation process
+
+========= EDA Simulation Settings =====================
+
+Sim Mode              :  Gate
+Family                :  max10
+Quartus root          :  d:/archivosdelprograma/intelfpga_lite19_1/quartus/bin64/
+Quartus sim root      :  d:/archivosdelprograma/intelfpga_lite19_1/quartus/eda/sim_lib
+Simulation Tool       :  modelsim-altera
+Simulation Language   :  vhdl
+Version               :  93
+Simulation Mode       :  GUI
+Sim Output File       :  P1OAC.vho
+Sim SDF file          :  P1OAC__vhdl.sdo
+Sim dir               :  simulation\modelsim
+
+=======================================================
+
+Info: Starting NativeLink simulation with ModelSim-Altera software
+Sourced NativeLink script d:/archivosdelprograma/intelfpga_lite19_1/quartus/common/tcl/internal/nativelink/modelsim.tcl
+Warning: File P1OAC_run_msim_gate_vhdl.do already exists - backing up current file as P1OAC_run_msim_gate_vhdl.do.bak3
+Info: Spawning ModelSim-Altera Simulation software 
+Info: NativeLink simulation flow was successful

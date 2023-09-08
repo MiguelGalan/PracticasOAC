@@ -1,0 +1,28 @@
+LIBRARY IEEE;
+USE IEEE.STD_LOGIC_1164.ALL;
+USE IEEE.STD_LOGIC_ARITH.ALL;
+USE IEEE.STD_LOGIC_UNSIGNED.ALL;
+
+ENTITY div_frec IS
+	PORT( reloj : in std_logic;
+	div_clk : out std_logic
+	);
+END div_frec;
+
+ARCHITECTURE Behavioral OF div_frec IS
+BEGIN 
+	PROCESS (reloj) --SIEMPRE VAMOS A PONER LAS ENTRADAS NUNCA SALIDAS.
+	VARIABLE cuenta: std_logic_vector(27 downto 0):=X"0000000"; --OCUPAMOS HEXADECIMAL PARA REPRESENTAR K=50M | Arreglo de 28 bits, 7 nibbles
+	BEGIN
+		IF rising_edge (reloj) then  --ESTO ES UN PULSO
+			
+			IF cuenta = X"FFFFFFF" then --SI HAY UN FLANCO DE SUBIDA 
+					cuenta:=X"0000000"; --SI SE HA LLEGADO AL NUMERO "0010 1111 1010 1111 0000 1000 " 
+			ELSE
+				cuenta:=cuenta+1;
+			END IF;
+		END IF;
+		--div_clk <= cuenta(0); --TOMAMOS EL BIT MAS SIGNIFICATIVO.EN LA SIMULACION ES CERO ESTE BIT Y EN LA TARJETA REGRESAMOS A VENITISEIS
+		div_clk <= cuenta(25);
+	END PROCESS;
+END Behavioral;
